@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import { Router, Link } from '@reach/router'
 
-function App() {
+// Pages
+import { About, Home, Test } from './Pages'
+
+// Others
+import './App.css'
+import { UserContext } from './UserContext'
+import { useMemo, useState } from 'react'
+
+const App = () => {
+  const [user, setUser] = useState(null)
+  const providerValue = useMemo(() => [user, setUser], [user, setUser])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/test">Test</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <h1>App</h1>
+      {user && <>Hello {user}</>}
+
+      <UserContext.Provider value={providerValue}>
+        <Router>
+          <Home path="/" />
+          <About path="/about" />
+          <Test path="/test" />
+        </Router>
+      </UserContext.Provider>
+    </>
+  )
 }
 
-export default App;
+export default App
